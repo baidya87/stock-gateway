@@ -1,0 +1,27 @@
+server:
+  port: 8787
+
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: stock-service
+        uri: lb://stock-service
+        predicates:
+        - Path=/stocks/**
+        filters:
+        - AddRequestHeader=apt-no, 3012
+        - AddResponseHeader=apt, MissionPeaks2
+        - AddResponseHeader=street, 39547 Gallaudet Drive
+      - id: buy-stocks
+        uri: lb://buy-stocks
+        predicates:
+        - Path=/buy-stocks/**
+  application:
+    name: stock-gateway
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
